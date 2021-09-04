@@ -61,12 +61,12 @@ export default function Home() {
                 </form>
             ) : null}
 
-            {!isLoading && !isError ? (
+            {/* {!isLoading && !isError ? (
                 <>
                     <div>WOAHHHHHHHHH</div>
                     <div>{data.data.entries[0].responses[0].question}</div>
                 </>
-            ) : null}
+            ) : null} */}
         </div>
     );
 }
