@@ -10,7 +10,6 @@ import { postNewEntry } from "../api/entriesAPI";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useHistory } from "react-router-dom";
-import { addHours, format, subHours } from "date-fns";
 
 const questions = [
     {
@@ -116,7 +115,7 @@ export default function ReflectPage({ authorized }) {
             try {
                 const now = new Date();
                 const data = {
-                    date: addHours(now, 6),
+                    date: now,
                     username: state.user.username,
                     user: state.user._id,
                     responses: [

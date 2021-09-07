@@ -9,8 +9,8 @@ const postNewEntry = async (data) => {
     return response.data;
 };
 
-const getUserEntries = async (id) => {
-    const response = await Entries.get(`/${id}`);
+const getUserEntries = async (id, body) => {
+    const response = await Entries.post(`/${id}`, body);
     return response.data;
 };
 
