@@ -5,16 +5,19 @@ import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { Link } from "react-router-dom";
 import { Context } from "../context";
 import { useLocation, useHistory } from "react-router-dom";
+import { getAuth } from "@firebase/auth";
 
 export default function Navbar() {
     const { state, dispatch } = useContext(Context);
     const { user } = state;
+
     const router = useHistory();
     const handleLogOut = () => {
         dispatch({
             type: "LOGOUT",
+            payload: getAuth(),
         });
-        router.push("/signin");
+        // router.push("/signin");
     };
     let { pathname } = useLocation();
     const tab = pathname;

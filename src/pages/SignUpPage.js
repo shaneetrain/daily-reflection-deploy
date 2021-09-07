@@ -3,9 +3,12 @@ import { Form, Field, ErrorMessage, Formik } from "formik";
 import * as yup from "yup";
 import Spacer from "../components/Spacer";
 import { useHistory } from "react-router";
+import { useContext } from "react";
+import { Context } from "../context/index";
 
 const SignUpPage = () => {
     const router = useHistory();
+    const { state } = useContext(Context);
 
     const initialValues = {
         email: "",
@@ -44,11 +47,15 @@ const SignUpPage = () => {
                 values.email,
                 values.password
             );
-            router.push("/");
+            if (user) {
+                router.push("/");
+            }
         } catch (err) {
             console.log(err);
         }
     };
+
+    if (state.user) router.push("/");
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen py-2">

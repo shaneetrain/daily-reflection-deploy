@@ -11,11 +11,14 @@
         "@testing-library/user-event": "^12.8.3",
         "autoprefixer": "^9.8.6",
         "axios": "^0.21.1",
+        "date-fns": "^2.23.0",
         "firebase": "^9.0.1",
         "formik": "^2.2.9",
+        "next": "latest",
         "nookies": "^2.5.2",
         "postcss": "^7.0.36",
         "react": "^17.0.2",
+        "react-date-range": "^1.3.0",
         "react-dom": "^17.0.2",
         "react-query": "^3.21.1",
         "react-router-dom": "^5.2.1",
@@ -31,7 +34,6 @@
         "test": "craco test",
         "eject": "react-scripts eject"
     },
-    "homepage": "https://daily-reflection-client.herokuapp.com/",
     "eslintConfig": {
         "extends": [
             "react-app",

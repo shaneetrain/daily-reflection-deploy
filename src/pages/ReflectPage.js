@@ -19,7 +19,7 @@ const questions = [
         height: "h-96",
     },
     {
-        text: "Out of 10, how productive were you today?",
+        text: "Out of 10, how well did the day go?",
         type: "number",
         num: 1,
         height: "h-12",
@@ -77,7 +77,7 @@ const questions = [
 ];
 
 export default function ReflectPage({ authorized }) {
-    const { state } = useContext(Context);
+    const { state, isAuthenticating } = useContext(Context);
     const [isError, setIsError] = useState(false);
     const router = useHistory();
 
@@ -114,7 +114,7 @@ export default function ReflectPage({ authorized }) {
         onSubmit: async (values) => {
             try {
                 const data = {
-                    date: new Date().toISOString(),
+                    date: new Date.now(),
                     username: state.user.username,
                     user: state.user._id,
                     responses: [
@@ -193,8 +193,12 @@ export default function ReflectPage({ authorized }) {
         validationSchema: schema,
     });
 
-    if (!state.user) {
-        return <div>loading</div>;
+    if (isAuthenticating) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-screen">
+                loading...
+            </div>
+        );
     }
     if (!state.user.username) {
         return (
@@ -204,15 +208,17 @@ export default function ReflectPage({ authorized }) {
         );
     }
     return (
-        <div className="pt-12 bg-gray-50 w-screen h-screen">
+        <div className="pt-12 bg-gray-50 w-screen h-full">
             <div className="flex justify-center">
-                <p className="font-bold text-4xl mb-12">Daily Reflection</p>
+                <p className="font-bold lg:text-5xl lg:mb-24 lg:mt-6 text-4xl mb-8">
+                    Daily Reflection
+                </p>
             </div>
             <form
                 className="flex justify-center"
                 onSubmit={formik.handleSubmit}
             >
-                <div className="flex flex-col items-center w-full">
+                <div className="flex flex-col items-center w-full max-w-sm sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-6xl">
                     {questions.map((q) => (
                         <FormFormik
                             formikProps={formik.getFieldProps(`answer${q.num}`)}

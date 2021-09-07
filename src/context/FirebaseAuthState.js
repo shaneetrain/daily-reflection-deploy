@@ -1,9 +1,9 @@
-import { getAuth, onIdTokenChanged } from "@firebase/auth";
+import { getAuth, onIdTokenChanged, signOut } from "@firebase/auth";
 import React, { useEffect, useContext } from "react";
 import { Context } from "./index";
 import Auth from "../api/authAPI";
-import { initializeApp } from "firebase/app";
 import { setCookie, destroyCookie } from "nookies";
+import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAch4RuvJZQch2kA6Gn085VU_VvKUP9254",
@@ -14,15 +14,17 @@ const firebaseConfig = {
     appId: "1:47538440852:web:a9de027b7e0d9b360c0281",
 };
 
+initializeApp(firebaseConfig);
+
 const FirebaseAuthState = ({ children }) => {
-    const { dispatch } = useContext(Context);
+    const { dispatch, setIsAuthenticating } = useContext(Context);
 
     useEffect(() => {
-        initializeApp(firebaseConfig);
         const auth = getAuth();
         return onIdTokenChanged(auth, async (user) => {
             if (user) {
                 try {
+                    setIsAuthenticating(true);
                     const { token } = await user.getIdTokenResult();
                     destroyCookie(null, "token");
                     setCookie(null, "token", token, {});
@@ -33,12 +35,11 @@ const FirebaseAuthState = ({ children }) => {
                         type: "LOGIN",
                         payload: response.data.user,
                     });
+                    setIsAuthenticating(false);
                 } catch (err) {
                     console.log(err);
                 }
             } else {
-                destroyCookie(null, "token");
-                setCookie(null, "token", "", {});
                 dispatch({
                     type: "LOGOUT",
                 });

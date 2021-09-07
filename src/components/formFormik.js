@@ -12,10 +12,10 @@ const FormFormik = ({
     type,
 }) => {
     return (
-        <div className="py-6 flex flex-col items-center w-11/12 h-auto">
+        <div className="py-3 md:py-6 flex flex-col items-center w-11/12 h-auto">
             <label
                 htmlFor={name}
-                className="self-start text-xl font-sans font-semibold text-gray-900"
+                className="self-start text-md md:text-xl font-sans font-semibold text-gray-900"
             >
                 {question}
             </label>

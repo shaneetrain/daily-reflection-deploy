@@ -7,6 +7,7 @@ import Spacer from "./components/Spacer";
 import Home from "./pages/Home";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
+import ViewReflection from "./pages/ViewReflection";
 
 const Navigation = () => {
     let { pathname } = useLocation();
@@ -19,6 +20,9 @@ const Navigation = () => {
             ) : null}
             <Spacer height={12} />
             <Switch>
+                <Route path="/reflection/:id">
+                    <ViewReflection />
+                </Route>
                 <Route path="/reflect">
                     <ReflectPage />
                 </Route>
