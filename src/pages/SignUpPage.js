@@ -7,7 +7,7 @@ import { useContext } from "react";
 import { Context } from "../context/index";
 
 const SignUpPage = () => {
-    const router = useHistory();
+    // const router = useHistory();
     const { state } = useContext(Context);
 
     const initialValues = {
@@ -47,15 +47,11 @@ const SignUpPage = () => {
                 values.email,
                 values.password
             );
-            if (user) {
-                router.push("/");
-            }
+            // router.push("/");
         } catch (err) {
             console.log(err);
         }
     };
-
-    if (state.user) router.push("/");
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen py-2">
@@ -128,7 +124,7 @@ const SignUpPage = () => {
                 <a
                     className="text-blue-600"
                     href={"/signin"}
-                    onClick={() => router.push("/signin")}
+                    // onClick={() => router.push("/signin")}
                 >
                     Sign In.
                 </a>
