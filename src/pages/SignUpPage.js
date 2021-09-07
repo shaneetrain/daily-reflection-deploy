@@ -5,9 +5,10 @@ import Spacer from "../components/Spacer";
 import { useHistory } from "react-router";
 import { useContext } from "react";
 import { Context } from "../context/index";
+import { Link } from "react-router-dom";
 
 const SignUpPage = () => {
-    // const router = useHistory();
+    const router = useHistory();
     const { state } = useContext(Context);
 
     const initialValues = {
@@ -47,7 +48,7 @@ const SignUpPage = () => {
                 values.email,
                 values.password
             );
-            // router.push("/");
+            router.push("/");
         } catch (err) {
             console.log(err);
         }
@@ -121,13 +122,11 @@ const SignUpPage = () => {
             <Spacer height={6} />
             <p>
                 already have an account?{" "}
-                <a
-                    className="text-blue-600"
-                    href={"/signin"}
-                    // onClick={() => router.push("/signin")}
-                >
-                    Sign In.
-                </a>
+                <Link to="/signin">
+                    <a className="text-blue-600" href={"/signin"}>
+                        Sign In.
+                    </a>
+                </Link>
             </p>
         </div>
     );
