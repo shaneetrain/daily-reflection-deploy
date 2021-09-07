@@ -11,7 +11,7 @@ import Spacer from "../components/Spacer";
 import DateRange from "../components/DateRangePicker";
 import Button from "../components/Button";
 import { useHistory } from "react-router";
-import { addDays, format, parseISO } from "date-fns";
+import { addDays, format, formatISO, parseISO } from "date-fns";
 import { ArrowCircleRightIcon } from "@heroicons/react/outline";
 
 export default function Home() {
@@ -46,8 +46,8 @@ export default function Home() {
     const getEntries = async () => {
         try {
             const mongoDates = {
-                startDate: format(startDate, "yyyy-MM-dd"),
-                endDate: format(addDays(endDate, 1), "yyyy-MM-dd"),
+                startDate: formatISO(startDate),
+                endDate: formatISO(addDays(endDate, 1)),
             };
             console.log(mongoDates);
             const validEntries = await getUserEntries(
