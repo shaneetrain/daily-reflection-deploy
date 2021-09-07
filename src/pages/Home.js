@@ -73,7 +73,7 @@ export default function Home() {
         <div className="flex flex-col items-center pt-12 min-h-screen py-2 bg-gray-50">
             <div className="flex pb-12">
                 <p className="text-6xl font-semibold text-gray-400 px-2">
-                    Hello
+                    Welcome
                 </p>
                 <p className="text-6xl font-bold text-blue-600 px-2">
                     {state.user.username}
