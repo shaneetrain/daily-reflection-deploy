@@ -11,7 +11,7 @@ import AvatarDropdown from "./AvatarDropdown";
 const Navbar2 = () => {
     const { state, dispatch } = useContext(Context);
     const { user } = state;
-    const [isHidden, setIsHidden] = useState("");
+    const [isHidden, setIsHidden] = useState("hidden");
 
     const handleLogOut = () => {
         dispatch({
