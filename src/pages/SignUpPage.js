@@ -229,7 +229,7 @@ const SignUp = () => {
                                                     to="/signin"
                                                     className="text-accent hover:text-accent-hover"
                                                 >
-                                                    Sign Up.
+                                                    Sign In.
                                                 </Link>
                                             </p>
                                         </div>

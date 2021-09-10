@@ -140,6 +140,7 @@ const Navbar2 = () => {
                                     <Link
                                         class="block p-4 text-sm font-medium text-gray-900 hover:bg-gray-50 rounded"
                                         to="/"
+                                        onClick={() => setIsHidden("hidden")}
                                     >
                                         Home
                                     </Link>
@@ -148,6 +149,7 @@ const Navbar2 = () => {
                                     <Link
                                         class="block p-4 text-sm font-medium text-gray-900 hover:bg-gray-50 rounded"
                                         to="/reflections"
+                                        onClick={() => setIsHidden("hidden")}
                                     >
                                         Reflections
                                     </Link>
@@ -156,12 +158,14 @@ const Navbar2 = () => {
                                     <Link
                                         class="block p-4 text-sm font-medium text-gray-900 hover:bg-gray-50 rounded"
                                         to="/reflect"
+                                        onClick={() => setIsHidden("hidden")}
                                     >
                                         Reflect
                                     </Link>
                                     <Link
                                         class="block p-4 text-sm font-medium text-gray-900 hover:bg-gray-50 rounded"
                                         to="/account"
+                                        onClick={() => setIsHidden("hidden")}
                                     >
                                         Account
                                     </Link>

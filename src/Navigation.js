@@ -8,7 +8,6 @@ import SignUpPage from "./pages/SignUpPage";
 import ViewReflection from "./pages/ViewReflection";
 import Navbar2 from "./components/Navbar2";
 import ReflectionsPage from "./pages/ReflectionsPage";
-import SignIn from "./pages/SignIn";
 
 const Navigation = () => {
     let { pathname } = useLocation();
@@ -31,9 +30,6 @@ const Navigation = () => {
                 </Route>
                 <Route path="/signin">
                     <SignInPage />
-                </Route>
-                <Route path="/signin2">
-                    <SignIn />
                 </Route>
                 <Route path="/signup">
                     <SignUpPage />
