@@ -20,7 +20,7 @@ const ViewReflection = (props) => {
                     {responses.map((q) => {
                         return (
                             <div className="py-6">
-                                <div className="font-semibold pb-2 text-blue-600">
+                                <div className="font-semibold pb-2 text-accent">
                                     {q.question}
                                 </div>
                                 <div>{q.answer}</div>

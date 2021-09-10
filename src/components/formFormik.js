@@ -24,7 +24,7 @@ const FormFormik = ({
                     id={name}
                     name={name}
                     type={type}
-                    className={`${width} ${height} ${justify} px-4 py-2 border-2 border-blue-600 rounded-lg bg-white my-2`}
+                    className={`${width} ${height} ${justify} px-4 py-2 border-2 border-accent-hover rounded-lg bg-white my-2`}
                     style={{ resize: "none", outline: "none" }}
                     {...formikProps}
                 />
@@ -33,7 +33,7 @@ const FormFormik = ({
                     id={name}
                     name={name}
                     type={type}
-                    className={` ${justify} px-4 py-2 border-2 border-blue-600 rounded-lg bg-white my-2`}
+                    className={` ${justify} px-4 py-2 border-2 border-accent-hover rounded-lg bg-white my-2`}
                     style={{ resize: "none", outline: "none" }}
                     {...formikProps}
                 />

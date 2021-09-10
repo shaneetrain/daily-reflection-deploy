@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import FormFormik from "../components/formFormik";
 import { Context } from "../context";
 import { useFormik } from "formik";
@@ -6,20 +6,21 @@ import * as yup from "yup";
 import { updateUser } from "../api/userAPI";
 import { useQuery, useQueryClient } from "react-query";
 import { getUserEntries } from "../api/entriesAPI";
-import DatePicker from "../components/DatePicker";
 import Spacer from "../components/Spacer";
-import DateRange from "../components/DateRangePicker";
 import Button from "../components/Button";
 import { useHistory } from "react-router";
 import { addDays, format, formatISO, parseISO } from "date-fns";
 import { ArrowCircleRightIcon } from "@heroicons/react/outline";
+import FunctionalCalendar from "../components/FunctionalCalendar";
+import { subDays } from "date-fns";
+import AvatarDropdown from "../components/AvatarDropdown";
 
 export default function Home() {
     const { state, isAuthenticating } = useContext(Context);
     const router = useHistory();
 
     const [entries, setEntries] = useState([]);
-    const [startDate, setStartDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(subDays(new Date(), 8));
     const [endDate, setEndDate] = useState(new Date());
 
     const schema = yup.object({
@@ -71,101 +72,46 @@ export default function Home() {
 
     return (
         <div className="flex flex-col items-center pt-12 min-h-screen py-2 bg-gray-50">
-            <div className="flex pb-12">
-                <p className="text-6xl font-semibold text-gray-400 px-2">
+            <div className="flex pb-4">
+                <p className="text-3xl md:text-4xl md:px-2 font-semibold text-gray-400 px-1">
                     Welcome
                 </p>
-                <p className="text-6xl font-bold text-blue-600 px-2">
-                    {state.user.username}
+                <p className="text-3xl md:text-4xl md:px-2 font-bold text-accent px-1">
+                    {state.user ? state.user.username : null}
                 </p>
             </div>
 
             {!state.user.username ? (
-                <form onSubmit={formik.handleSubmit}>
-                    <FormFormik
-                        formikProps={formik.getFieldProps(`username`)}
-                        name={`username`}
-                        question={"username"}
-                        type={"text"}
-                        justify={"self-start"}
-                        error={
-                            eval(`formik.errors.username`) &&
-                            eval(`formik.touched.username`)
-                        }
-                        test={eval(`formik.errors.username`)}
-                    />
-                    <button
-                        type="submit"
-                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                <div>
+                    <form
+                        className="flex flex-row items-center"
+                        onSubmit={formik.handleSubmit}
                     >
-                        Submit Username
-                    </button>
-                </form>
+                        <div className="py-3 md:py-6 flex flex-col items-center w-11/12 h-auto">
+                            <label
+                                htmlFor="username"
+                                className="self-start text-md md:text-xl font-sans font-semibold text-gray-900"
+                            ></label>
+                            <input
+                                id="username"
+                                name="username"
+                                type="text"
+                                className={` px-4 py-2 border-2 border-accent-hover rounded-l-lg bg-white my-2`}
+                                style={{ resize: "none", outline: "none" }}
+                                {...formik.getFieldProps(`username`)}
+                            />
+                        </div>
+                        <div>
+                            <button
+                                type="submit"
+                                className={`inline-flex justify-center h-11 w-32 items-center px-6 py-3 border border-transparent text-sm font-medium rounded-r-lg shadow-sm text-white bg-accent hover:bg-accent-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent`}
+                            >
+                                Pick Name
+                            </button>
+                        </div>
+                    </form>
+                </div>
             ) : null}
-            {state.user.username ? (
-                <>
-                    <Spacer height={6} />
-                    <DateRange
-                        startDate={startDate}
-                        endDate={endDate}
-                        setStartDate={setStartDate}
-                        setEndDate={setEndDate}
-                    />
-                    <Spacer height={6} />
-                    <Button text="Get Entries" onClick={getEntries} />
-                </>
-            ) : null}
-            <div className="my-4 sm:my-8 md:my-12 xl:w-2/5 lg:w-1/2 md:w-3/5 w-96 ">
-                {state.user && entries.length > 0
-                    ? entries.map((e) => {
-                          let i = 0;
-                          return (
-                              <div
-                                  onClick={() => {
-                                      router.push({
-                                          pathname: `/reflection/${e._id}`,
-                                          state: { reflection: e },
-                                      });
-                                  }}
-                                  className=" hover:-translate-y-1 hover:shadow-lg cursor-pointer transform transition my-6 flex-row flex justify-between items-center rounded-xl shadow-md bg-white p-6  h-auto overflow-hidden "
-                              >
-                                  <div className="flex flex-col  w-10/12">
-                                      <div className="text-xl font-bold pb-4">
-                                          {format(
-                                              parseISO(e.date),
-                                              "LLLL' 'do', 'yyyy"
-                                          )}
-                                      </div>
-                                      <div>
-                                          {e.responses.map((q) => {
-                                              if (i === 0) {
-                                                  i++;
-                                                  return (
-                                                      <div className="">
-                                                          <div className="font-semibold pb-2 text-blue-600">
-                                                              {q.question}
-                                                          </div>
-                                                          <div>{q.answer}</div>
-                                                      </div>
-                                                  );
-                                              }
-                                          })}
-                                      </div>
-                                  </div>
-                                  <ArrowCircleRightIcon className="w-10 h-10 text-blue-600" />
-                              </div>
-                          );
-                      })
-                    : null}
-            </div>
-
-            {/* {!isLoading && !isError && data ? (
-                <>
-                    <div>WOAHHHHHHHHH</div>
-                    <div>{data.data.entries[0].responses[0].answer}</div>
-                    {console.log(data)}
-                </>
-            ) : null} */}
         </div>
     );
 }

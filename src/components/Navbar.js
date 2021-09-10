@@ -4,20 +4,18 @@ import { Disclosure, Menu } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { Link } from "react-router-dom";
 import { Context } from "../context";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { getAuth } from "@firebase/auth";
 
 export default function Navbar() {
     const { state, dispatch } = useContext(Context);
     const { user } = state;
 
-    const router = useHistory();
     const handleLogOut = () => {
         dispatch({
             type: "LOGOUT",
             payload: getAuth(),
         });
-        // router.push("/signin");
     };
     let { pathname } = useLocation();
     const tab = pathname;
@@ -42,7 +40,6 @@ export default function Navbar() {
                                     {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
                                     <Link to="/">
                                         <a
-                                            href="#"
                                             className={
                                                 tab === "/"
                                                     ? navHighlightedStyle
@@ -54,7 +51,6 @@ export default function Navbar() {
                                     </Link>
                                     <Link to="/reflect">
                                         <a
-                                            href="#"
                                             className={
                                                 tab === "/reflect"
                                                     ? navHighlightedStyle
@@ -85,17 +81,13 @@ export default function Navbar() {
                                     <div>
                                         {!user ? (
                                             <Link to="/signin">
-                                                <a
-                                                    href="#"
-                                                    className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-                                                >
+                                                <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                                                     Log In
                                                 </a>
                                             </Link>
                                         ) : (
                                             <Link to="/signin">
                                                 <a
-                                                    href="#"
                                                     onClick={handleLogOut}
                                                     className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
                                                 >
@@ -133,7 +125,6 @@ export default function Navbar() {
                             {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
                             <Link to="/">
                                 <a
-                                    href="#"
                                     className={
                                         tab === "/"
                                             ? mobileHighlighted
@@ -145,7 +136,6 @@ export default function Navbar() {
                             </Link>
                             <Link to="/reflect">
                                 <a
-                                    href="#"
                                     className={
                                         tab === "/reflect"
                                             ? mobileHighlighted
@@ -171,7 +161,6 @@ export default function Navbar() {
                             <div className="mt-3 space-y-1">
                                 <Link to="/signin">
                                     <a
-                                        href="#"
                                         onClick={handleLogOut}
                                         className="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100"
                                     >

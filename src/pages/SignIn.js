@@ -1,5 +1,4 @@
-import React from "react";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { Form, Field, ErrorMessage, Formik } from "formik";
 import * as yup from "yup";
 import { useHistory } from "react-router";
@@ -7,15 +6,13 @@ import { useContext } from "react";
 import { Context } from "../context/index";
 import { Link } from "react-router-dom";
 
-const SignUp = () => {
+const SignIn = () => {
     const router = useHistory();
     const { state } = useContext(Context);
 
     const initialValues = {
         email: "",
         password: "",
-        confirmPassword: "",
-        happy: false,
     };
 
     const validationSchema = yup.object({
@@ -24,36 +21,27 @@ const SignUp = () => {
             .email("Please enter a valid email")
             .required("Please enter your email"),
 
-        password: yup
-            .string()
-            .required("Please enter a password")
-            .min(6, "Password must be atleast six characters"),
-        confirmPassword: yup
-            .string()
-            .required("Please confirm your password")
-            .min(6, "Password must be atleast 6 characters")
-            .test(
-                "passwords-match",
-                "Passwords do not match",
-                function (value) {
-                    return this.parent.password === value;
-                }
-            ),
+        password: yup.string().required("Please enter a password"),
     });
 
-    const registerUser = async (values) => {
+    const signInUser = async (values) => {
         try {
             const auth = getAuth();
-            const user = await createUserWithEmailAndPassword(
+            const user = await signInWithEmailAndPassword(
                 auth,
                 values.email,
                 values.password
             );
-            router.push("/");
+
+            if (user) {
+                router.push("/");
+            }
         } catch (err) {
             console.log(err);
         }
     };
+
+    if (state.user) router.push("/");
     return (
         <section class="relative py-20 2xl:py-40 bg-violet-500 overflow-hidden bg-transparent bg-gray-100">
             <div class=" absolute top-0 left-0 lg:bottom-0 h-full lg:h-auto w-full lg:w-4/12 lg:overflow-hidden">
@@ -61,13 +49,13 @@ const SignUp = () => {
             </div>
             <div class="relative container px-4 mx-auto">
                 <div class="max-w-5xl mx-auto">
-                    <div class="flex flex-wrap items-center justify-center mx-4">
-                        <div class="w-96 md:w-128 lg:w-2/5  px-4">
+                    <div class="flex flex-wrap items-center -mx-4">
+                        <div class="w-full lg:w-2/5 px-4">
                             <div class="px-6 lg:px-12 py-12 lg:py-24 bg-white shadow-lg rounded-xl lg:rounded-lg">
                                 <Formik
                                     initialValues={initialValues}
                                     validationSchema={validationSchema}
-                                    onSubmit={registerUser}
+                                    onSubmit={signInUser}
                                 >
                                     <Form action="#">
                                         <h3 class="mb-10 text-2xl font-bold font-heading">
@@ -129,7 +117,7 @@ const SignUp = () => {
                                                 )}
                                             </ErrorMessage>
                                         </div>
-                                        <div class="flex items-center pl-6 my-2 border border-gray-200 bg-white rounded-full">
+                                        <div class="flex items-center pl-6 my-4 border border-gray-200 bg-white rounded-full">
                                             <span class="inline-block pr-3 border-r border-gray-200">
                                                 <svg
                                                     class="w-5 h-5"
@@ -166,61 +154,12 @@ const SignUp = () => {
                                                 )}
                                             </ErrorMessage>
                                         </div>
-                                        <div class="flex items-center pl-6 mb-6 border border-gray-200 bg-white rounded-full">
-                                            <span class="inline-block pr-3 border-r border-gray-200">
-                                                <svg
-                                                    class="w-5 h-5"
-                                                    width="20"
-                                                    height="21"
-                                                    viewBox="0 0 20 21"
-                                                    fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                        d="M15.6243 13.5625C15.3939 13.5625 15.2077 13.7581 15.2077 14V16.4517C15.2077 18.2573 14.0443 20.125 12.0973 20.125H5.42975C3.56848 20.125 1.87435 18.3741 1.87435 16.4517V10.5H15.6243C15.8547 10.5 16.041 10.3044 16.041 10.0625C16.041 9.82058 15.8547 9.625 15.6243 9.625H15.2077V5.95175C15.2077 2.39183 12.8635 0 9.37435 0H7.70768C4.21855 0 1.87435 2.39183 1.87435 5.95175V9.625H1.45768C1.22728 9.625 1.04102 9.82058 1.04102 10.0625V16.4517C1.04102 18.8322 3.13268 21 5.42975 21H12.0972C14.3089 21 16.0409 19.0023 16.0409 16.4517V14C16.041 13.7581 15.8547 13.5625 15.6243 13.5625ZM2.70768 5.95175C2.70768 2.86783 4.67022 0.875 7.70768 0.875H9.37435C12.4119 0.875 14.3743 2.86783 14.3743 5.95175V9.625H2.70768V5.95175Z"
-                                                        fill="black"
-                                                    ></path>
-                                                    <path
-                                                        d="M18.8815 9.3711C18.7482 9.17377 18.4878 9.12827 18.3003 9.26701L8.58655 16.4919L6.75235 14.5655C6.58942 14.3944 6.32608 14.3944 6.16322 14.5655C6.00028 14.7366 6.00028 15.0131 6.16322 15.1842L8.24655 17.3717C8.32695 17.4561 8.43362 17.4999 8.54115 17.4999C8.62488 17.4999 8.70868 17.4732 8.78282 17.4194L18.7828 9.98185C18.9703 9.84143 19.0141 9.56843 18.8815 9.3711Z"
-                                                        fill="black"
-                                                    ></path>
-                                                </svg>
-                                            </span>
-                                            <Field
-                                                class="w-full pr-6 pl-4 py-4 font-bold placeholder-gray-300 rounded-r-full focus:outline-none"
-                                                type="password"
-                                                name="confirmPassword"
-                                                id="confirmPassword"
-                                                placeholder="Confirm password"
-                                            />
-                                        </div>
-                                        <div className="flex justify-center items-center">
-                                            <ErrorMessage name="confirmPassword">
-                                                {(msg) => (
-                                                    <div className="text-red-600 text-xs">
-                                                        {msg}
-                                                    </div>
-                                                )}
-                                            </ErrorMessage>
-                                        </div>
-                                        <div class="inline-flex mb-10">
-                                            <Field
-                                                name="happy"
-                                                id="happy"
-                                                class="mr-4"
-                                                type="checkbox"
-                                            />
 
-                                            <p class="-mt-2 text-sm text-gray-500">
-                                                By signing up you agree to live
-                                                your life filled with happiness.
-                                            </p>
-                                        </div>
                                         <button
                                             type="submit"
-                                            class="py-4 w-full bg-accent hover:bg-accent-hover text-white font-bold rounded-full transition duration-10"
+                                            class="py-4 w-full bg-accent hover:bg-yellow-500 text-white font-bold rounded-full transition duration-200"
                                         >
-                                            Get started
+                                            Reflect
                                         </button>
                                         <div className="flex justify-center mt-6 text-sm">
                                             <p>
@@ -249,4 +188,4 @@ const SignUp = () => {
     );
 };
 
-export default SignUp;
+export default SignIn;

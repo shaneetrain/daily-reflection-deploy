@@ -10,6 +10,9 @@ import { postNewEntry } from "../api/entriesAPI";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useHistory } from "react-router-dom";
+import { FolderOpenIcon } from "@heroicons/react/outline";
+import Button from "../components/Button";
+import UploadFile from "../components/UploadFile";
 
 const questions = [
     {
@@ -110,6 +113,7 @@ export default function ReflectPage({ authorized }) {
             answer7: "",
             answer8: "",
             answer9: "",
+            files: "",
         },
         onSubmit: async (values) => {
             try {
@@ -194,6 +198,12 @@ export default function ReflectPage({ authorized }) {
         validationSchema: schema,
     });
 
+    const testSubmit = () => {
+        console.error(formik.values);
+    };
+
+    // console.log(formik.getFieldProps(`files`));
+
     if (isAuthenticating) {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen">
@@ -211,15 +221,16 @@ export default function ReflectPage({ authorized }) {
     return (
         <div className="pt-12 bg-gray-50 w-screen h-full">
             <div className="flex justify-center">
-                <p className="font-bold lg:text-5xl lg:mb-24 lg:mt-6 text-4xl mb-8">
+                <p className="text-gray-900 font-bold lg:text-5xl lg:mb-24 lg:mt-6 text-4xl mb-8">
                     Daily Reflection
                 </p>
             </div>
             <form
                 className="flex justify-center"
                 onSubmit={formik.handleSubmit}
+                enctype="multipart/form-data"
             >
-                <div className="flex flex-col items-center w-full max-w-sm sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-6xl">
+                <div className="flex flex-col items-center w-84 sm:w-3/4 md:max-w-2xl lg:max-w-4xl xl:max-w-6xl">
                     {questions.map((q) => (
                         <FormFormik
                             formikProps={formik.getFieldProps(`answer${q.num}`)}
@@ -237,9 +248,10 @@ export default function ReflectPage({ authorized }) {
                             test={eval(`formik.errors.answer${q.num}`)}
                         />
                     ))}
+                    {/* <UploadFile /> */}
                     <button
                         type="submit"
-                        className="shadow-blue-600 hover:text-blue-600 hover:bg-gray-50 bg-blue-600 text-gray-50 inline-flex items-center mb-6 px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-xl "
+                        className="shadow-accent hover:text-accent hover:bg-gray-50 bg-accent text-gray-50 inline-flex items-center mb-6 px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-xl "
                     >
                         Sumbit Reflection
                     </button>
@@ -250,30 +262,8 @@ export default function ReflectPage({ authorized }) {
                     ) : null}
                 </div>
             </form>
+            {/* <Button text="Test" onClick={testSubmit} /> */}
             <Spacer height={24} />
         </div>
     );
-}
-
-export async function getServerSideProps(context) {
-    try {
-        const cookies = parseCookies(context);
-        const { data } = await axios.get("http://localhost:8000/api/v1/auth", {
-            headers: {
-                token: cookies.token,
-            },
-        });
-        const authorized = data.ok;
-
-        return {
-            props: { authorized }, // will be passed to the page component as props
-        };
-    } catch (err) {
-        return {
-            redirect: {
-                permanent: false,
-                destination: "/signin",
-            },
-        };
-    }
 }

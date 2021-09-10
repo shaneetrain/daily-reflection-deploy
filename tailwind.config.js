@@ -8,6 +8,13 @@ module.exports = {
                 192: "45rem",
                 256: "60rem",
             },
+            colors: {
+                accent: {
+                    DEFAULT: "#F59E0B",
+                    hover: "#FBBF24",
+                    dark: "#D97706",
+                },
+            },
         },
     },
     variants: {
